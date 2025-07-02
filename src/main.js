@@ -4,6 +4,9 @@ import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+import { fetchImages } from './js/pixabay-api.js';
+import { createGalleryMarkup } from './js/render-functions.js';
+
 const refs = {
   searchForm: document.querySelector('.js-search-form'),
   gallery: document.querySelector('.js-gallery'),
@@ -11,34 +14,6 @@ const refs = {
 };
 
 let lightbox = null;
-
-const createGalleryMarkup = images =>
-  images
-    .map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => `
-      <li class="gallery-item">
-        <a class="gallery-link" href="${largeImageURL}">
-          <img class="gallery-image" src="${webformatURL}" alt="${tags}" loading="lazy" />
-        </a>
-        <div class="info">
-  <div class="info-box"><span class="label">Likes</span><span>${likes}</span></div>
-  <div class="info-box"><span class="label">Views</span><span>${views}</span></div>
-  <div class="info-box"><span class="label">Comments</span><span>${comments}</span></div>
-  <div class="info-box"><span class="label">Downloads</span><span>${downloads}</span></div>
-</div>
-
-      </li>
-    `
-    )
-    .join('');
 
 const onSearchFormSubmit = event => {
   event.preventDefault();
@@ -55,21 +30,11 @@ const onSearchFormSubmit = event => {
       message: 'Please enter a search term!',
       position: 'topRight',
     });
+    refs.loader.classList.remove('is-visible');
     return;
   }
 
-  fetch(
-    `https://pixabay.com/api/?key=51075470-1937ac32d69b36f6f43f67dbf&orientation=horizontal&q=${searchedQuery}&image_type=photo&safesearch=true`
-  )
-    .finally(() => {
-      refs.loader.classList.remove('is-visible');
-    })
-    .then(responce => {
-      if (!responce.ok) {
-        throw new Error(responce.status);
-      }
-      return responce.json();
-    })
+  fetchImages(searchedQuery)
     .then(result => {
       if (result.hits.length === 0) {
         iziToast.error({
@@ -79,7 +44,6 @@ const onSearchFormSubmit = event => {
           position: 'topRight',
         });
         refs.gallery.innerHTML = '';
-
         return;
       }
 
@@ -101,6 +65,9 @@ const onSearchFormSubmit = event => {
         position: 'topRight',
         timeout: 5000,
       });
+    })
+    .finally(() => {
+      refs.loader.classList.remove('is-visible');
     });
 };
 
