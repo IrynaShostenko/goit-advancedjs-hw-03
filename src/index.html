@@ -4,50 +4,27 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla App Template</title>
+    <title>HW-3</title>
     <link rel="stylesheet" href="./css/styles.css" />
+    <script type="module" src="./main.js" defer></script>
   </head>
+
   <body>
-    <header class="header">
+    <section class="gallery-section">
       <div class="container">
-        <nav class="nav">
-          <a class="nav-logo" href="./index.html" aria-label="Site logo">
-            <svg
-              class="w-6 h-6 text-gray-800 dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"
-              />
-            </svg>
-          </a>
-          <ul class="nav-list">
-            <li class="nav-item">
-              <a class="nav-link" href="./page-2.html">Page 2</a>
-            </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link {=$highlight-curr}" href="./page-3.html"
-                >Page 3</a
-              >
-            </li> -->
-          </ul>
-        </nav>
+        <form class="search-form js-search-form">
+          <input
+            class="search-input js-search-input"
+            type="text"
+            name="user_query"
+            placeholder="Search images..."
+            required
+          />
+          <button class="search-btn" type="submit">Search</button>
+        </form>
+        <span class="loader js-loader"></span>
       </div>
-    </header>
-
-    <main>
-      <!-- Loads the specified .html file -->
-    </main>
-
-    <script type="module" src="./main.js"></script>
+      <div class="container"><ul class="gallery js-gallery"></ul></div>
+    </section>
   </body>
 </html>
